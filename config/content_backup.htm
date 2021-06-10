@@ -217,9 +217,12 @@
 <p>*註(<code class="lua plain">30*</code><code class="lua functions">math.pi是度數，30是徑度</code>)</p>
 <p>2程式:</p>
 <p>function sysCall_init()<br/> -- do some initialization here<br/> joint=sim.getObjectHandle('joint')<br/> set=0<br/> degset=10<br/>end<br/> <br/>function sysCall_actuation()<br/> -- put your actuation code here<br/> message,auxiliaryData=sim.getSimulatorMessage()<br/> while message~=-1 do<br/> if (message==sim.message_keypress) then<br/> if (auxiliaryData[1]==97) then<br/> set1=set+degset<br/> sim.setJointTargetPosition(joint,set1*math.pi/180)<br/> end<br/> if (auxiliaryData[1]==100) then<br/> set2=set-degset<br/> sim.setJointTargetPosition(joint,set2*math.pi/180)<br/> end<br/> if (auxiliaryData[1]==119) then<br/> degset=degset+10<br/> print(degset)<br/> end<br/> if (auxiliaryData[1]==115) then<br/> degset=degset-10<br/> if(degset&lt;1) then<br/> degset=1<br/> end<br/> print(degset)<br/> end<br/> end<br/> message,auxiliaryData=sim.getSimulatorMessage()<br/> end<br/>end</p>
-<p></p><h3>W16</h3>
+<p></p>
+<h3>W16</h3>
 <p></p>
 <h3>W17</h3>
+<p></p>
+<h3>w18</h3>
 <p></p>
 <p></p>
 <p></p>
