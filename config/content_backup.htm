@@ -208,29 +208,173 @@
 <p></p>
 <p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/vi6YdTktpM0" title="YouTube video player" width="560"></iframe></p>
 <p>1程式:</p>
-<div class="line number1 index0 alt2"><code class="lua keyword">function</code> <code class="lua plain">sysCall_init()</code></div>
-<div class="line number2 index1 alt1"><code class="lua spaces">    </code><code class="lua comments">-- do some initialization here</code></div>
-<div class="line number3 index2 alt2"><code class="lua spaces">    </code><code class="lua plain">joint=sim.getObjectHandle(</code><code class="lua string">'joint01'</code><code class="lua plain">)</code></div>
-<div class="line number4 index3 alt1"><code class="lua keyword">end</code></div>
-<div class="line number5 index4 alt2"> </div>
-<div class="line number6 index5 alt1"><code class="lua keyword">function</code> <code class="lua plain">sysCall_actuation()</code></div>
-<div class="line number7 index6 alt2"><code class="lua spaces">    </code><code class="lua comments">-- put your actuation code here</code></div>
-<div class="line number8 index7 alt1"><code class="lua spaces">    </code><code class="lua plain">sim.setJointTargetPosition(joint,30*</code><code class="lua functions">math.pi</code><code class="lua plain">/180)</code></div>
-<div class="line number9 index8 alt2"><code class="lua keyword">end</code></div>
-<p>*註(<code class="lua plain">30*</code><code class="lua functions">math.pi是度數，30是徑度</code>)</p>
+<pre class="brush:lua;auto-links:false;toolbar:false" contenteditable="false">function sysCall_init()
+    -- do some initialization here
+    joint=sim.getObjectHandle('joint')
+end
+function sysCall_actuation()
+    -- put your actuation code here
+    sim.setJointTargetPosition(joint,30*math.pi/180)
+end
+</pre>
+<div class="line number1 index0 alt2"></div>
 <p>2程式:</p>
-<p>function sysCall_init()<br/> -- do some initialization here<br/> joint=sim.getObjectHandle('joint')<br/> set=0<br/> degset=10<br/>end<br/> <br/>function sysCall_actuation()<br/> -- put your actuation code here<br/> message,auxiliaryData=sim.getSimulatorMessage()<br/> while message~=-1 do<br/> if (message==sim.message_keypress) then<br/> if (auxiliaryData[1]==97) then<br/> set1=set+degset<br/> sim.setJointTargetPosition(joint,set1*math.pi/180)<br/> end<br/> if (auxiliaryData[1]==100) then<br/> set2=set-degset<br/> sim.setJointTargetPosition(joint,set2*math.pi/180)<br/> end<br/> if (auxiliaryData[1]==119) then<br/> degset=degset+10<br/> print(degset)<br/> end<br/> if (auxiliaryData[1]==115) then<br/> degset=degset-10<br/> if(degset&lt;1) then<br/> degset=1<br/> end<br/> print(degset)<br/> end<br/> end<br/> message,auxiliaryData=sim.getSimulatorMessage()<br/> end<br/>end</p>
-<p></p>
-<h3>W16</h3>
-<p>Onshape</p>
+<pre class="brush:lua;auto-links:false;toolbar:false" contenteditable="false">function sysCall_init()
+    -- do some initialization here
+    joint=sim.getObjectHandle('joint')
+    set=0
+    degset=10
+end
+  
+function sysCall_actuation()
+    -- put your actuation code here
+    message,auxiliaryData=sim.getSimulatorMessage()
+    while message~=-1 do
+        if (message==sim.message_keypress) then
+            if (auxiliaryData[1]==97) then
+            set1=set+degset
+            sim.setJointTargetPosition(joint,set1*math.pi/180)
+            end
+            if (auxiliaryData[1]==100) then
+            set2=set-degset
+            sim.setJointTargetPosition(joint,set2*math.pi/180)
+            end
+            if (auxiliaryData[1]==119) then
+                degset=degset+10
+                print(degset)
+            end
+            if (auxiliaryData[1]==115) then
+                degset=degset-10
+                if(degset&lt;1) then
+                    degset=1
+                end
+                print(degset)
+            end
+        end
+    message,auxiliaryData=sim.getSimulatorMessage()
+    end
+end</pre>
+<p><br/><br/></p><h3>W16</h3>
+<h4>Onshape</h4>
 <p><img alt="" height="236" src="/images/chrome_ZoJiIqSARe.png" width="420"/></p>
 <p>*在底座的設計上需要高一點，因為還要裝置方體使他作動</p>
 <p>圖片下載:<a href="https://cad.onshape.com/documents/6398ea59602b891aeeefe662/w/4207e4646e44e60e313af00c/e/439880f5a69e37a61e4e90c3">點我!點我!</a></p>
 <p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/PCLYJqahsX4" title="YouTube video player" width="560"></iframe></p>
-<p>程式</p>
-<p>迴圈</p>
+<h4>程式</h4>
+<p>  迴圈</p>
 <p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/J1Wdp-Q4nak" title="YouTube video player" width="560"></iframe></p>
-<p></p>
+<pre class="brush:lua;auto-links:false;toolbar:false" contenteditable="false">function moving(x,y)
+    a=0.4
+    b=0.4
+    c=math.pow((math.pow(x,2)+math.pow(y,2)),0.5)
+    s=(a+b+c)/2
+    area=math.pow((s*(s-a)*(s-b)*(s-c)),0.5)
+    h=area/(2*c)
+    deg1_base=math.atan(x/y)
+    if x&lt;0 and y&lt;0 then
+        deg1_base=deg1_base+math.pi
+    end
+    deg1_tri=math.asin(h/a)
+    deg1=deg1_base+deg1_tri
+    deg2=math.pi-(0.5*math.pi-deg1_tri)-math.acos(h/b)
+    deg3=deg2-deg1
+    sim.setJointTargetPosition(joint01,deg1)
+    sim.setJointTargetPosition(joint02,-deg2)
+    sim.setJointTargetPosition(joint03,deg3)
+end
+
+function sysCall_threadmain()
+    joint01=sim.getObjectHandle('joint1')
+    joint02=sim.getObjectHandle('joint2')
+    joint03=sim.getObjectHandle('joint3')
+    jointz=sim.getObjectHandle('jointz')
+    sim.setJointTargetPosition(joint01,0)
+    sim.setJointTargetPosition(joint02,0)
+    sim.setJointTargetPosition(joint03,0)
+    sim.setJointTargetPosition(jointz,0)
+    sim.setIntegerSignal("pad_switch",1)
+    sim.setJointTargetPosition(jointz,-0.08)
+    sim.wait(3)
+    sim.setJointTargetPosition(jointz,0)
+    sim.wait(3)
+    while sim.getSimulationState()~=sim.simulation_advancing_abouttostopre do
+    moving(0.2,0.7)
+    sim.wait(3)
+    sim.setIntegerSignal("pad_switch",0)
+    sim.wait(3)
+    sim.setIntegerSignal("pad_switch",1)
+    sim.setJointTargetPosition(jointz,-0.08)
+    sim.wait(3)
+    sim.setJointTargetPosition(jointz,0)
+    sim.wait(3)
+    moving(-0.3,-0.55)
+    sim.wait(3)
+    sim.setIntegerSignal("pad_switch",0)
+    sim.wait(3)
+    sim.setIntegerSignal("pad_switch",1)
+    sim.setJointTargetPosition(jointz,-0.08)
+    sim.wait(3)
+    sim.setJointTargetPosition(jointz,0)
+    sim.wait(3)
+    end
+end</pre>
+<p>檔案下載:<a href="https://drive.google.com/drive/my-drive">w16迴圈程式.ttt</a></p>
+<p>--------------------------------------------------------------------------------------------------------<br/>鍵盤控制</p>
+<p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/qJU3oqPr7K4" title="YouTube video player" width="560"></iframe></p>
+<pre class="brush:lua;auto-links:false;toolbar:false" contenteditable="false">function sysCall_init()
+    joint01=sim.getObjectHandle('joint1')
+    joint02=sim.getObjectHandle('joint2')
+    joint03=sim.getObjectHandle('joint3')
+    jointz=sim.getObjectHandle('jointz')
+    sim.setJointTargetPosition(joint01,0)
+    sim.setJointTargetPosition(joint02,0)
+    sim.setJointTargetPosition(joint03,0)
+    sim.setJointTargetPosition(jointz,0)
+    deg1=0
+    deg2=0
+    zhing=false
+    pad=false
+end
+
+function sysCall_actuation()
+     message,auxiliaryData=sim.getSimulatorMessage()
+    while message~=-1 do
+        if (message==sim.message_keypress) then
+            if (auxiliaryData[1]==119) then
+            deg1=deg1+1
+            sim.setJointTargetPosition(joint01,deg1*math.pi/180)
+            end
+            if (auxiliaryData[1]==115) then
+            deg1=deg1-1
+            sim.setJointTargetPosition(joint01,deg1*math.pi/180)
+            end
+            if (auxiliaryData[1]==97) then
+            deg2=deg2+1
+            sim.setJointTargetPosition(joint02,deg2*math.pi/180)
+            end
+            if (auxiliaryData[1]==100) then
+            deg2=deg2-1
+            sim.setJointTargetPosition(joint02,deg2*math.pi/180)
+            end
+            if (auxiliaryData[1]==111) then
+                sim.setJointTargetPosition(jointz,-0.55)
+                sim.setIntegerSignal("pad_switch",1)
+            end
+            if (auxiliaryData[1]==108) then
+                sim.setJointTargetPosition(jointz,0)
+                sim.setIntegerSignal("pad_switch",1)
+            end
+            if (auxiliaryData[1]==98) then
+                sim.setIntegerSignal("pad_switch",0)
+            end
+            sim.setJointTargetPosition(joint03,(deg2-deg1)*math.pi/180)
+        end
+    message,auxiliaryData=sim.getSimulatorMessage()
+    end
+end
+
+</pre>
+<p><br/>檔案下載:<a href="https://drive.google.com/drive/my-drive">w16鍵盤控制程式.ttt</a></p>
 <p></p><h3>W17</h3>
 <p></p>
 <h3>w18</h3>
