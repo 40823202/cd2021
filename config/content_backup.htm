@@ -256,6 +256,7 @@ function sysCall_actuation()
 end</pre>
 <p><br/><br/></p>
 <h3>W16</h3>
+<p></p>
 <h4>Onshape</h4>
 <p><img alt="" height="236" src="/images/chrome_ZoJiIqSARe.png" width="420"/></p>
 <p>*在底座的設計上需要高一點，因為還要裝置方體使他作動</p>
@@ -265,120 +266,12 @@ end</pre>
 <h4>coppeliasim場景布置</h4>
 <p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/ef8hXdW4XIQ" title="YouTube video player" width="560"></iframe></p>
 <h4>程式迴圈</h4>
-<p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/addEFrLbOrc" title="YouTube video player" width="560"></iframe></p>
-<pre class="brush:lua;auto-links:false;toolbar:false" contenteditable="false">function moving(x,y)
-    a=0.4
-    b=0.4
-    c=math.pow((math.pow(x,2)+math.pow(y,2)),0.5)
-    s=(a+b+c)/2
-    area=math.pow((s*(s-a)*(s-b)*(s-c)),0.5)
-    h=area/(2*c)
-    deg1_base=math.atan(x/y)
-    if x&lt;0 and y&lt;0 then
-        deg1_base=deg1_base+math.pi
-    end
-    deg1_tri=math.asin(h/a)
-    deg1=deg1_base+deg1_tri
-    deg2=math.pi-(0.5*math.pi-deg1_tri)-math.acos(h/b)
-    deg3=deg2-deg1
-    sim.setJointTargetPosition(joint01,deg1)
-    sim.setJointTargetPosition(joint02,-deg2)
-    sim.setJointTargetPosition(joint03,deg3)
-end
-
-function sysCall_threadmain()
-    joint01=sim.getObjectHandle('joint1')
-    joint02=sim.getObjectHandle('joint2')
-    joint03=sim.getObjectHandle('joint3')
-    jointz=sim.getObjectHandle('jointz')
-    sim.setJointTargetPosition(joint01,0)
-    sim.setJointTargetPosition(joint02,0)
-    sim.setJointTargetPosition(joint03,0)
-    sim.setJointTargetPosition(jointz,0)
-    sim.setIntegerSignal("pad_switch",1)
-    sim.setJointTargetPosition(jointz,-0.08)
-    sim.wait(3)
-    sim.setJointTargetPosition(jointz,0)
-    sim.wait(3)
-    while sim.getSimulationState()~=sim.simulation_advancing_abouttostopre do
-    moving(0.2,0.7)
-    sim.wait(3)
-    sim.setIntegerSignal("pad_switch",0)
-    sim.wait(3)
-    sim.setIntegerSignal("pad_switch",1)
-    sim.setJointTargetPosition(jointz,-0.08)
-    sim.wait(3)
-    sim.setJointTargetPosition(jointz,0)
-    sim.wait(3)
-    moving(-0.3,-0.55)
-    sim.wait(3)
-    sim.setIntegerSignal("pad_switch",0)
-    sim.wait(3)
-    sim.setIntegerSignal("pad_switch",1)
-    sim.setJointTargetPosition(jointz,-0.08)
-    sim.wait(3)
-    sim.setJointTargetPosition(jointz,0)
-    sim.wait(3)
-    end
-end</pre>
-<p><span>鍵盤對應鍵:軸的運動</span></p>
-<p><span>s:軸1左轉、w:軸1右轉</span><br/><span>a:軸2左轉、d:軸2右轉</span><br/><span>o:吸盤向下、l:吸盤向上並吸取、b:放下</span></p>
-<p>檔案下載:<a href="https://drive.google.com/drive/my-drive">w16迴圈程式.ttt</a></p>
+<p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/addEFrLbOrc" title="YouTube video player" width="560"></iframe><span><br/></span></p>
+<p>檔案下載:<a href="https://drive.google.com/drive/u/0/my-drive">w16迴圈程式.ttt</a></p>
 <h4>--------------------------------------------------------------------------------------------------<br/>鍵盤程式控制</h4>
 <p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/J1Wdp-Q4nak" title="YouTube video player" width="560"></iframe></p>
-<pre class="brush:lua;auto-links:false;toolbar:false" contenteditable="false">function sysCall_init()
-    joint01=sim.getObjectHandle('joint1')
-    joint02=sim.getObjectHandle('joint2')
-    joint03=sim.getObjectHandle('joint3')
-    jointz=sim.getObjectHandle('jointz')
-    sim.setJointTargetPosition(joint01,0)
-    sim.setJointTargetPosition(joint02,0)
-    sim.setJointTargetPosition(joint03,0)
-    sim.setJointTargetPosition(jointz,0)
-    deg1=0
-    deg2=0
-    zhing=false
-    pad=false
-end
-
-function sysCall_actuation()
-     message,auxiliaryData=sim.getSimulatorMessage()
-    while message~=-1 do
-        if (message==sim.message_keypress) then
-            if (auxiliaryData[1]==119) then
-            deg1=deg1+1
-            sim.setJointTargetPosition(joint01,deg1*math.pi/180)
-            end
-            if (auxiliaryData[1]==115) then
-            deg1=deg1-1
-            sim.setJointTargetPosition(joint01,deg1*math.pi/180)
-            end
-            if (auxiliaryData[1]==97) then
-            deg2=deg2+1
-            sim.setJointTargetPosition(joint02,deg2*math.pi/180)
-            end
-            if (auxiliaryData[1]==100) then
-            deg2=deg2-1
-            sim.setJointTargetPosition(joint02,deg2*math.pi/180)
-            end
-            if (auxiliaryData[1]==111) then
-                sim.setJointTargetPosition(jointz,-0.55)
-                sim.setIntegerSignal("pad_switch",1)
-            end
-            if (auxiliaryData[1]==108) then
-                sim.setJointTargetPosition(jointz,0)
-                sim.setIntegerSignal("pad_switch",1)
-            end
-            if (auxiliaryData[1]==98) then
-                sim.setIntegerSignal("pad_switch",0)
-            end
-            sim.setJointTargetPosition(joint03,(deg2-deg1)*math.pi/180)
-        end
-    message,auxiliaryData=sim.getSimulatorMessage()
-    end
-end
-
-</pre>
+<p><span>鍵盤對應鍵:軸的運動</span></p>
+<p><span>s:軸1左轉、w:軸1右轉</span><br/><span>a:軸2左轉、d:軸2右轉</span><br/><span>o:吸盤向下、l:吸盤向上並吸取、b:放下</span></p>
 <p><br/>檔案下載:<a href="https://drive.google.com/drive/my-drive">w16鍵盤控制程式.ttt</a></p>
 <p>-----------------------------------------------------------------------------------------------------</p>
 <h4>python remote API</h4>
